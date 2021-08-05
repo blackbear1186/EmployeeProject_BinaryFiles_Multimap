@@ -74,7 +74,7 @@ bool c_EmployeeRecords::inputValidation(int argc, char *argv[])
 **    Side Effects:
 **
 */
-void c_EmployeeRecords::readFile(string inputFileName)
+void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
 {
 
     fstream inputBinaryFile;
@@ -85,7 +85,7 @@ void c_EmployeeRecords::readFile(string inputFileName)
     char name[30];
 
     inputBinaryFile.open(inputFileName, ios::in | ios::binary);
-    //outputBinaryFile.open(outputBinaryFile, ios:: in | ios::out | ios::binary);
+    outputBinaryFile.open(outputFileName, ios:: in | ios::out | ios::binary);
 
     multimap<int, EMPLOYEE> employeeMap;
     multimap<int, EMPLOYEE>::iterator eIterator;
@@ -108,14 +108,34 @@ void c_EmployeeRecords::readFile(string inputFileName)
             employeeMap.insert({department, {emp.id,emp.name}});
         }
     }
-    for(eIterator = employeeMap.begin(); eIterator != employeeMap.end();++eIterator){
-        auto valuePair = eIterator->second;
-        cout << eIterator->first << " " << valuePair.id << " " << valuePair.name << endl;
+
+
+    outputBinaryFile.seekp(ios::beg);
+
+    if (outputBinaryFile.is_open())
+    {
+        for(eIterator = employeeMap.begin(); eIterator != employeeMap.end();++eIterator){
+            EMPLOYEE valuePair = eIterator->second;
+            //cout << eIterator->first << " " << valuePair.id << " " << valuePair.name << endl;
+            outputBinaryFile.write((char*)&eIterator->first, sizeof(int));
+            //outputBinaryFile.write((char*)&valuePair.id, sizeof(valuePair.id));
+            //outputBinaryFile.write((char*)valuePair.name.c_str(), sizeof(valuePair.name));
+
+        }
+        outputBinaryFile.seekg(ios::beg);
+        int dep = 0;
+        int i = 0;
+        char n[30];
+
+        while(!outputBinaryFile.eof()){
+            outputBinaryFile.read((char*)&dep, sizeof(int));
+            //outputBinaryFile.read((char*)&i, sizeof());
+            //outputBinaryFile.read((char*)n, sizeof(EMPLOYEE));
+            cout << dep << endl;
+
+        }
     }
 
-    /*if (outputBinaryFile.is_open())
-    {
-    }*/
 
     inputBinaryFile.close();
     outputBinaryFile.close();

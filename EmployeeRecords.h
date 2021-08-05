@@ -10,8 +10,7 @@ struct EMPLOYEE {
     int id;
     string name;
     
-    //EMPLOYEE();
-    //EMPLOYEE(int newId, string newName) : id{newId}, name{newName}{}
+
 };
 
 class c_EmployeeRecords
@@ -22,7 +21,7 @@ public:
     ~c_EmployeeRecords();
 
     bool inputValidation(int,char*[]);
-    void readFile(string);
+    void readFile(string,string);
 
 private:
 
