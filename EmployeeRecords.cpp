@@ -111,15 +111,15 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
 
 
     outputBinaryFile.seekp(ios::beg);
-
+    EMPLOYEE mp;
     if (outputBinaryFile.is_open())
     {
         for(eIterator = employeeMap.begin(); eIterator != employeeMap.end();++eIterator){
             EMPLOYEE valuePair = eIterator->second;
             //cout << eIterator->first << " " << valuePair.id << " " << valuePair.name << endl;
             outputBinaryFile.write((char*)&eIterator->first, sizeof(int));
-            //outputBinaryFile.write((char*)&valuePair.id, sizeof(valuePair.id));
-            //outputBinaryFile.write((char*)valuePair.name.c_str(), sizeof(valuePair.name));
+            outputBinaryFile.write((char*)&valuePair.id, sizeof(int));
+            outputBinaryFile.write((char*)valuePair.name.c_str(), 30);
 
         }
         outputBinaryFile.seekg(ios::beg);
@@ -129,9 +129,11 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
 
         while(!outputBinaryFile.eof()){
             outputBinaryFile.read((char*)&dep, sizeof(int));
-            //outputBinaryFile.read((char*)&i, sizeof());
-            //outputBinaryFile.read((char*)n, sizeof(EMPLOYEE));
-            cout << dep << endl;
+            outputBinaryFile.read((char*)&i, sizeof(int));
+            outputBinaryFile.read((char*)n, 30);
+            mp.id = i;
+            mp.name = n;
+            cout << dep << " " << mp.id << " " << mp.name << endl;
 
         }
     }
