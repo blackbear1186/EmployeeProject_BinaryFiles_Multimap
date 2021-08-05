@@ -80,9 +80,9 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
     fstream inputBinaryFile;
     fstream outputBinaryFile;
 
-    int department;
-    int id;
-    char name[30];
+    int rDepartment;
+    int rId;
+    char rName[30];
 
     inputBinaryFile.open(inputFileName, ios::in | ios::binary);
     outputBinaryFile.open(outputFileName, ios:: in | ios::out | ios::binary);
@@ -90,28 +90,28 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
     multimap<int, EMPLOYEE> employeeMap;
     multimap<int, EMPLOYEE>::iterator eIterator;
 
-    EMPLOYEE emp;
+    EMPLOYEE readInfo;
 
     if (inputBinaryFile.is_open())
     {
         inputBinaryFile.seekg(ios::beg);
         while (!inputBinaryFile.eof())
         {
-            inputBinaryFile.read((char *)&department, sizeof(int));
-            inputBinaryFile.read((char *)&id, sizeof(int));
-            inputBinaryFile.read((char *)name, 30);
+            inputBinaryFile.read((char *)&rDepartment, sizeof(int));
+            inputBinaryFile.read((char *)&rId, sizeof(int));
+            inputBinaryFile.read((char *)rName, 30);
 
             //cout << department << " " << id << " " << endl;
 
-            emp.id = id;
-            emp.name = name;
-            employeeMap.insert({department, {emp.id,emp.name}});
+            readInfo.id = rId;
+            readInfo.name = rName;
+            employeeMap.insert({rDepartment, {readInfo.id,readInfo.name}});
         }
     }
 
 
     outputBinaryFile.seekp(ios::beg);
-    EMPLOYEE mp;
+    EMPLOYEE writtenInfo;
     if (outputBinaryFile.is_open())
     {
         for(eIterator = employeeMap.begin(); eIterator != employeeMap.end();++eIterator){
@@ -123,17 +123,17 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
 
         }
         outputBinaryFile.seekg(ios::beg);
-        int dep = 0;
-        int i = 0;
-        char n[30];
+        int wDepartment = 0;
+        int wId = 0;
+        char wName[30];
 
         while(!outputBinaryFile.eof()){
-            outputBinaryFile.read((char*)&dep, sizeof(int));
-            outputBinaryFile.read((char*)&i, sizeof(int));
-            outputBinaryFile.read((char*)n, 30);
-            mp.id = i;
-            mp.name = n;
-            cout << dep << " " << mp.id << " " << mp.name << endl;
+            outputBinaryFile.read((char*)&wDepartment, sizeof(int));
+            outputBinaryFile.read((char*)&wId, sizeof(int));
+            outputBinaryFile.read((char*)wName, 30);
+            writtenInfo.id = wId;
+            writtenInfo.name = wName;
+            //cout << wDepartment << " " << writtenInfo.id << " " << writtenInfo.name << endl;
 
         }
     }
