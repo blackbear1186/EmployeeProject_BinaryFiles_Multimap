@@ -1,0 +1,10 @@
+/.vscode/
+/.idea/
+
+/obj/
+/src/
+a.out
+
+customErrorClass.o
+EmployeeRecords.o
+Johnson_EmployeeFinal
