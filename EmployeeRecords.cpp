@@ -109,7 +109,7 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
         }
     }
 
-
+    int aIndex = 0, bIndex = 0, hrIndex = 0, sIndex = 0, pIndex = 0;
     outputBinaryFile.seekp(ios::beg);
     EMPLOYEE writtenInfo;
     if (outputBinaryFile.is_open())
@@ -133,10 +133,34 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
             outputBinaryFile.read((char*)wName, 30);
             writtenInfo.id = wId;
             writtenInfo.name = wName;
+
+            switch (wDepartment) {
+                case 0:
+                    ++aIndex;
+                    break;
+                case 1:
+                    ++bIndex;
+                    break;
+                case 2:
+                    ++hrIndex;
+                    break;
+                case 3:
+                    ++sIndex;
+                    break;
+                case 4:
+                    ++pIndex;
+                    break;
+            }
+
+
             //cout << wDepartment << " " << writtenInfo.id << " " << writtenInfo.name << endl;
 
         }
+        //cout << outputBinaryFile.gcount()<< endl;
+        //outputBinaryFile.seekg(ios::beg);
+
     }
+    //cout << sIndex<< endl;
 
 
     inputBinaryFile.close();
