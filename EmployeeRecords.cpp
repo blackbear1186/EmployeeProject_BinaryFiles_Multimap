@@ -85,7 +85,7 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
     char rName[30];
 
     inputBinaryFile.open(inputFileName, ios::in | ios::binary);
-    outputBinaryFile.open(outputFileName, ios:: in | ios::out | ios::binary);
+    outputBinaryFile.open(outputFileName, ios::in | ios::out | ios::binary);
 
     multimap<int, EMPLOYEE> employeeMap;
     multimap<int, EMPLOYEE>::iterator eIterator;
@@ -105,7 +105,7 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
 
             readInfo.id = rId;
             readInfo.name = rName;
-            employeeMap.insert({rDepartment, {readInfo.id,readInfo.name}});
+            employeeMap.insert({rDepartment, {readInfo.id, readInfo.name}});
         }
     }
 
@@ -114,55 +114,127 @@ void c_EmployeeRecords::readFile(string inputFileName, string outputFileName)
     EMPLOYEE writtenInfo;
     if (outputBinaryFile.is_open())
     {
-        for(eIterator = employeeMap.begin(); eIterator != employeeMap.end();++eIterator){
+        for (eIterator = employeeMap.begin(); eIterator != employeeMap.end(); ++eIterator)
+        {
             EMPLOYEE valuePair = eIterator->second;
             //cout << eIterator->first << " " << valuePair.id << " " << valuePair.name << endl;
-            outputBinaryFile.write((char*)&eIterator->first, sizeof(int));
-            outputBinaryFile.write((char*)&valuePair.id, sizeof(int));
-            outputBinaryFile.write((char*)valuePair.name.c_str(), 30);
-
+            outputBinaryFile.write((char *)&eIterator->first, sizeof(int));
+            outputBinaryFile.write((char *)&valuePair.id, sizeof(int));
+            outputBinaryFile.write((char *)valuePair.name.c_str(), 30);
         }
-        outputBinaryFile.seekg(ios::beg);
         int wDepartment = 0;
         int wId = 0;
         char wName[30];
 
-        while(!outputBinaryFile.eof()){
-            outputBinaryFile.read((char*)&wDepartment, sizeof(int));
-            outputBinaryFile.read((char*)&wId, sizeof(int));
-            outputBinaryFile.read((char*)wName, 30);
+        outputBinaryFile.seekg(ios::beg);
+        while (!outputBinaryFile.eof())
+        {
+            outputBinaryFile.read((char *)&wDepartment, sizeof(int));
+            outputBinaryFile.read((char *)&wId, sizeof(int));
+            outputBinaryFile.read((char *)wName, 30);
             writtenInfo.id = wId;
             writtenInfo.name = wName;
-
-            switch (wDepartment) {
-                case 0:
-                    ++aIndex;
-                    break;
-                case 1:
-                    ++bIndex;
-                    break;
-                case 2:
-                    ++hrIndex;
-                    break;
-                case 3:
-                    ++sIndex;
-                    break;
-                case 4:
-                    ++pIndex;
-                    break;
-            }
-
-
             //cout << wDepartment << " " << writtenInfo.id << " " << writtenInfo.name << endl;
 
+            switch (wDepartment)
+            {
+            case 0:
+                ++aIndex;
+                break;
+            case 1:
+                ++bIndex;
+                break;
+            case 2:
+                ++hrIndex;
+                break;
+            case 3:
+                ++sIndex;
+                break;
+            case 4:
+                ++pIndex;
+                break;
+            default:
+                break;
+            }
+
         }
-        //cout << outputBinaryFile.gcount()<< endl;
-        //outputBinaryFile.seekg(ios::beg);
+
+
 
     }
-    //cout << sIndex<< endl;
+    int realAIndex = aIndex / 38;
+    int realBIndex = bIndex / 38;
+    int realHRIndex = hrIndex / 38;
+    int realSIndex = sIndex / 38;
+    int realPIndex = pIndex / 38;
 
+
+    //cout << aIndex+1 << endl;
+    //cout << bIndex << endl;
+    //cout << hrIndex << endl;
+    //cout << sIndex << endl;
+    //cout << pIndex << endl;
+    int userDep = 0;
+    cout << "Enter a department to search: ";
+    cin >> userDep;
+    p_printEmployeeRange(userDep,aIndex);
 
     inputBinaryFile.close();
     outputBinaryFile.close();
+}
+void c_EmployeeRecords::p_employeeMenu(int choice) {
+    do {
+
+    }while(choice != 5)
+}
+void c_EmployeeRecords::p_printEmployee(int department, int index) {
+
+}
+void c_EmployeeRecords::p_printEmployeeRange(int department, int index) {
+    string depStr = "";
+    int startIndex = 0;
+    int endIndex = 0;
+    switch (department) {
+        case 0:
+            depStr = "Accounting";
+            cout << "There are " << index << " employees in " << depStr << endl;
+            cout << "Enter a starting index: ";
+            cin >> startIndex;
+            cout << "Enter an ending index: ";
+            cin >> endIndex;
+            break;
+        case 1:
+            depStr = "Business";
+            cout << "There are " << index << " employees in " << depStr << endl;
+            cout << "Enter a starting index: ";
+            cin >> startIndex;
+            cout << "Enter an ending index: ";
+            cin >> endIndex;
+            break;
+        case 2:
+            depStr = "Human Resources";
+            cout << "There are " << index << " employees in " << depStr << endl;
+            cout << "Enter a starting index: ";
+            cin >> startIndex;
+            cout << "Enter an ending index: ";
+            cin >> endIndex;
+            break;
+        case 3:
+            depStr = "Sales";
+            cout << "There are " << index << " employees in " << depStr << endl;
+            cout << "Enter a starting index: ";
+            cin >> startIndex;
+            cout << "Enter an ending index: ";
+            cin >> endIndex;
+            break;
+        case 4:
+            depStr = "Production";
+            cout << "There are " << index << " employees in " << depStr << endl;
+            cout << "Enter a starting index: ";
+            cin >> startIndex;
+            cout << "Enter an ending index: ";
+            cin >> endIndex;
+            break;
+    }
+
 }
